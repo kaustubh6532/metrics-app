@@ -1,3 +1,4 @@
+# … existing values …
 replicaCount: 1
 
 image:
@@ -11,14 +12,15 @@ secret:
   name: metrics-app-secret
   envKey: PASSWORD
 
-# ────────────────────────────────────────────────────────────────────────────
-# Add this block so your serviceaccount.yaml template has something to read
+# ────────────────────────────────────────────────────
+# ServiceAccount configuration (Argo CD needs this)
 serviceAccount:
-  create: true          # Helm will render and create the ServiceAccount
-  name: ""              # leave blank to let Helm name it; or set to an existing SA
-  annotations: {}       # optional
+  create: true
+  name: ""
+  annotations: {}
 
-# ────────────────────────────────────────────────────────────────────────────
+# ────────────────────────────────────────────────────
+# Ingress block — this is what Argo CD will sync
 ingress:
   enabled: true
   className: nginx
@@ -30,11 +32,10 @@ ingress:
       paths:
         - path: /counter
           pathType: Prefix
+        - path: /
+          pathType: Prefix
 
+# ────────────────────────────────────────────────────
 autoscaling:
   enabled: false
-  # if you want HPA later, enable and configure:
-  # minReplicas: 1
-  # maxReplicas: 5
-  # targetCPUUtilizationPercentage: 80
 
