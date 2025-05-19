@@ -1,4 +1,3 @@
-# … your existing values …
 replicaCount: 1
 
 image:
@@ -17,23 +16,19 @@ serviceAccount:
   name: ""
   annotations: {}
 
-# ────────────────────────────────────────────────────
-# ' NEW: Ingress configuration for ArgoCD sync
 ingress:
-  enabled: true                    # turn on Ingress
-  className: nginx                 # match your ingressClassName
+  enabled: true                   
+  className: nginx                
   annotations:
-    # no rewrite-target here—let the app see the real path
     nginx.ingress.kubernetes.io/affinity: "cookie"
   hosts:
     - host: localhost
       paths:
-        - path: /counter          # this path goes to /counter in your app
+        - path: /counter         
           pathType: Prefix
-        - path: /                 # this path goes to the dashboard (your "/" handler)
+        - path: /                
           pathType: Prefix
 
-# ────────────────────────────────────────────────────
 autoscaling:
   enabled: false
 
