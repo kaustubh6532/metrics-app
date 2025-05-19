@@ -1,4 +1,4 @@
-# … existing values …
+# … your existing values …
 replicaCount: 1
 
 image:
@@ -12,27 +12,25 @@ secret:
   name: metrics-app-secret
   envKey: PASSWORD
 
-# ────────────────────────────────────────────────────
-# ServiceAccount configuration (Argo CD needs this)
 serviceAccount:
   create: true
   name: ""
   annotations: {}
 
 # ────────────────────────────────────────────────────
-# Ingress block — this is what Argo CD will sync
+# ' NEW: Ingress configuration for ArgoCD sync
 ingress:
-  enabled: true
-  className: nginx
+  enabled: true                    # turn on Ingress
+  className: nginx                 # match your ingressClassName
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # no rewrite-target here—let the app see the real path
     nginx.ingress.kubernetes.io/affinity: "cookie"
   hosts:
     - host: localhost
       paths:
-        - path: /counter
+        - path: /counter          # this path goes to /counter in your app
           pathType: Prefix
-        - path: /
+        - path: /                 # this path goes to the dashboard (your "/" handler)
           pathType: Prefix
 
 # ────────────────────────────────────────────────────
